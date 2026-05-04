@@ -842,6 +842,65 @@ int main() {
         }
     }
 }
+postfix expression 
+#include <stdio.h>
+#include <ctype.h>
+
+#define MAX 100
+
+int stack[MAX];
+int top = -1;
+
+// Push operation
+void push(int value) {
+    stack[++top] = value;
+}
+
+// Pop operation
+int pop() {
+    return stack[top--];
+}
+
+// Function to evaluate postfix expression
+int evaluatePostfix(char exp[]) {
+    int i = 0;
+    int op1, op2;
+
+    while (exp[i] != '\0') {
+
+        // If operand, push to stack
+        if (isdigit(exp[i])) {
+            push(exp[i] - '0'); // Convert char to int
+        }
+        else {
+            op2 = pop();
+            op1 = pop();
+
+            switch (exp[i]) {
+                case '+': push(op1 + op2); break;
+                case '-': push(op1 - op2); break;
+                case '*': push(op1 * op2); break;
+                case '/': push(op1 / op2); break;
+            }
+        }
+        i++;
+    }
+
+    return pop();
+}
+
+int main() {
+    char exp[100];
+
+    printf("Enter postfix expression: ");
+    scanf("%s", exp);
+
+    int result = evaluatePostfix(exp);
+
+    printf("Result = %d\n", result);
+
+    return 0;
+}
 queue with array
 #include <stdio.h>
 #define MAX 5
