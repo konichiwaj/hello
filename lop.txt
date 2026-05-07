@@ -1,0 +1,1045 @@
+
+
+## Q1. Item Class with Price Calculation
+[cite_start]This program creates a blueprint for an item, calculates total price based on quantity, and demonstrates object creation[cite: 88, 89, 90].
+
+```java
+import java.util.Scanner;
+
+class Item {
+    int itemId;
+    String name;
+    double price;
+    int quantity;
+
+    [cite_start]// Method to accept values [cite: 89]
+    void accept() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Item ID: ");
+        itemId = sc.nextInt();
+        sc.nextLine(); // Consume newline
+        System.out.print("Enter Name: ");
+        name = sc.nextLine();
+        System.out.print("Enter Price: ");
+        price = sc.nextDouble();
+        System.out.print("Enter Quantity: ");
+        quantity = sc.nextInt();
+    }
+
+    [cite_start]// Method to calculate total price [cite: 89]
+    double calculateTotal() {
+        return price * quantity;
+    }
+
+    void display() {
+        System.out.println(itemId + "\t" + name + "\t" + price + "\t" + quantity + "\t" + calculateTotal());
+    }
+}
+
+public class ItemDemo {
+    public static void main(String[] args) {
+        Item[] items = new Item[3]; [cite_start]// Create three objects [cite: 90]
+
+        for (int i = 0; i < 3; i++) {
+            System.out.println("\nEnter details for Item " + (i + 1) + ":");
+            items[i] = new Item();
+            items[i].accept();
+        }
+
+        System.out.println("\nID\tName\tPrice\tQty\tTotal");
+        for (Item it : items) {
+            it.display();
+        }
+    }
+}
+```
+
+---
+
+## Q2. Student Array and Max Marks
+[cite_start]This program uses a constructor to initialize 'n' students and finds the one with the highest score[cite: 91, 92, 93].
+
+```java
+import java.util.Scanner;
+
+class Student {
+    int rollNo;
+    String name;
+    double marks;
+
+    [cite_start]// Constructor to accept details [cite: 93]
+    Student(int r, String n, double m) {
+        rollNo = r;
+        name = n;
+        marks = m;
+    }
+
+    void display() {
+        System.out.println("Roll No: " + rollNo + ", Name: " + name + ", Marks: " + marks);
+    }
+}
+
+public class StudentDemo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter number of students: ");
+        int n = sc.nextInt();
+
+        Student[] students = new Student[n]; [cite_start]// Array of objects [cite: 93]
+
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter Roll, Name, Marks for student " + (i + 1) + ":");
+            int r = sc.nextInt();
+            String nm = sc.next();
+            double m = sc.nextDouble();
+            students[i] = new Student(r, nm, m);
+        }
+
+        [cite_start]// Logic to find maximum marks [cite: 92]
+        Student maxStudent = students[0];
+        for (int i = 1; i < n; i++) {
+            if (students[i].marks > maxStudent.marks) {
+                maxStudent = students[i];
+            }
+        }
+
+        System.out.println("\nStudent with Maximum Marks:");
+        maxStudent.display();
+    }
+}
+```
+
+---
+
+## Q3. Bank Account System
+[cite_start]This program models a banking system with validation for deposits and withdrawals[cite: 94, 95].
+
+```java
+import java.util.Scanner;
+
+class BankAccount {
+    String accountNumber;
+    String accountHolderName;
+    double balance; [cite_start]// [cite: 96]
+
+    BankAccount(String accNo, String name, double bal) {
+        accountNumber = accNo;
+        accountHolderName = name;
+        balance = bal;
+    }
+
+    [cite_start]// Add money to balance (must be positive) [cite: 99, 108]
+    void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Successfully deposited " + amount);
+        } else {
+            System.out.println("Deposit amount must be positive!");
+        }
+    }
+
+    [cite_start]// Withdraw after checking sufficient balance [cite: 99, 100, 107]
+    void withdraw(double amount) {
+        if (amount > balance) {
+            System.out.println("Insufficient balance! Withdrawal denied.");
+        } else if (amount <= 0) {
+            System.out.println("Amount must be greater than zero.");
+        } else {
+            balance -= amount;
+            System.out.println("Successfully withdrew " + amount);
+        }
+    }
+
+    void displayBalance() {
+        System.out.println("\n--- Account Details ---");
+        System.out.println("Acc No: " + accountNumber);
+        System.out.println("Holder: " + accountHolderName);
+        System.out.println("Current Balance: " + balance); [cite_start]// [cite: 101]
+    }
+}
+
+public class BankDemo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        [cite_start]// Accept details [cite: 104]
+        System.out.print("Enter Account Number: ");
+        String acc = sc.next();
+        System.out.print("Enter Holder Name: ");
+        String name = sc.next();
+        System.out.print("Enter Initial Balance: ");
+        double bal = sc.nextDouble();
+
+        BankAccount userAcc = new BankAccount(acc, name, bal); [cite_start]// [cite: 103]
+
+        [cite_start]// Perform Transactions [cite: 105]
+        System.out.print("\nEnter amount to deposit: ");
+        userAcc.deposit(sc.nextDouble());
+        userAcc.displayBalance(); [cite_start]// [cite: 106]
+
+        System.out.print("\nEnter amount to withdraw: ");
+        userAcc.withdraw(sc.nextDouble());
+        userAcc.displayBalance(); [cite_start]// [cite: 106]
+    }
+}
+
+For **Assignment 3: Inheritance and Interface**, the focus shifts to code reusability, abstraction, and defining contracts for your classes.
+
+---
+
+### Q1. Student and Teacher Records (Inheritance)
+This program uses a superclass `Person` to store common data, while subclasses handle specific roles.
+
+```java
+import java.util.*;
+
+class Person {
+    String name, address;
+    Person(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+}
+
+class Student extends Person {
+    Map<String, String> courseGrades = new HashMap<>();
+
+    Student(String name, String address) { super(name, address); }
+
+    void addGrade(String course, String grade) { courseGrades.put(course, grade); }
+
+    void display() {
+        System.out.println("Student: " + name + " | Address: " + address);
+        System.out.println("Grades: " + courseGrades);
+    }
+}
+
+class Teacher extends Person {
+    List<String> courses = new ArrayList<>();
+
+    Teacher(String name, String address) { super(name, address); }
+
+    void addCourse(String course) { courses.add(course); }
+    
+    void display() {
+        System.out.println("Teacher: " + name + " | Courses Taught: " + courses);
+    }
+}
+
+public class SchoolSystem {
+    public static void main(String[] args) {
+        Student s = new Student("Alice", "123 Lane");
+        s.addGrade("Java", "A");
+        
+        Teacher t = new Teacher("Dr. Smith", "456 Blvd");
+        t.addCourse("Data Structures");
+        
+        s.display();
+        t.display();
+    }
+}
+```
+
+---
+
+### Q2. Shape Hierarchy (Abstract Methods)
+Demonstrates method overriding where `Circle` and `Square` calculate areas differently.
+
+```java
+abstract class Shape {
+    String name;
+    Shape(String name) { this.name = name; }
+    abstract void area();
+}
+
+class Circle extends Shape {
+    double radius;
+    Circle(double r) { super("Circle"); this.radius = r; }
+    @Override
+    void area() { System.out.println(name + " Area: " + (3.14 * radius * radius)); }
+}
+
+class Square extends Shape {
+    double side;
+    Square(double s) { super("Square"); this.side = s; }
+    @Override
+    void area() { System.out.println(name + " Area: " + (side * side)); }
+}
+
+public class ShapeDemo {
+    public static void main(String[] args) {
+        Shape c = new Circle(5);
+        Shape s = new Square(4);
+        c.area();
+        s.area();
+    }
+}
+```
+
+---
+
+### Q3. Stack Interface (Palindrome Check)
+Using an interface to define stack operations to reverse a word and check for palindromes.
+
+```java
+interface Stack {
+    void push(char c);
+    char pop();
+    boolean isEmpty();
+}
+
+class MyStack implements Stack {
+    char[] data = new char[100];
+    int top = -1;
+
+    public void push(char c) { data[++top] = c; }
+    public char pop() { return data[top--]; }
+    public boolean isEmpty() { return top == -1; }
+}
+
+public class PalindromeCheck {
+    public static void main(String[] args) {
+        String word = "radar";
+        MyStack s = new MyStack();
+        
+        for(char c : word.toCharArray()) s.push(c);
+        
+        String reversed = "";
+        while(!s.isEmpty()) reversed += s.pop();
+        
+        if(word.equals(reversed)) System.out.println(word + " is a Palindrome.");
+        else System.out.println(word + " is not a Palindrome.");
+    }
+}
+```
+
+---
+
+### Q4. Integer Operations Interface (Menu-driven)
+A menu-driven program implementing math functions through an interface.
+
+```java
+import java.util.Scanner;
+
+interface MathOps {
+    void sum(int n);
+    void avg(int n, int count);
+    void digitSum(int n);
+}
+
+class Calculator implements MathOps {
+    public void sum(int n) { System.out.println("Sum logic here"); }
+    public void avg(int n, int count) { System.out.println("Avg: " + (double)n/count); }
+    public void digitSum(int n) {
+        int sum = 0;
+        while(n > 0) { sum += n % 10; n /= 10; }
+        System.out.println("Digit Sum: " + sum);
+    }
+}
+
+public class MenuMath {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Calculator calc = new Calculator();
+        
+        System.out.println("1. Digit Sum\n2. Exit");
+        int choice = sc.nextInt();
+        if(choice == 1) {
+            System.out.print("Enter number: ");
+            calc.digitSum(sc.nextInt());
+        }
+    }
+}
+
+For **Assignment 4: Packages**, you need to focus on the structure of your folders. [cite_start]In Java, a `package` statement must match the physical directory the file is stored in[cite: 76, 77].
+
+---
+
+### Q1. Series Package
+[cite_start]This assignment requires a package named `Series` containing three classes[cite: 77].
+
+**File 1: `Series/Prime.java`**
+```java
+package Series;
+
+public class Prime {
+    public void generate(int n) {
+        int count = 0, num = 2;
+        while (count < n) {
+            boolean isPrime = true;
+            for (int i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i == 0) { isPrime = false; break; }
+            }
+            if (isPrime) {
+                System.out.print(num + " ");
+                count++;
+            }
+            num++;
+        }
+        System.out.println();
+    }
+}
+```
+
+**File 2: `Series/Fibonacci.java`**
+```java
+package Series;
+
+public class Fibonacci {
+    public void generate(int n) {
+        int a = 0, b = 1;
+        for (int i = 0; i < n; i++) {
+            System.out.print(a + " ");
+            int next = a + b;
+            a = b;
+            b = next;
+        }
+        System.out.println();
+    }
+}
+```
+
+**File 3: `Series/Square.java`**
+```java
+package Series;
+
+public class Square {
+    public void generate(int n) {
+        for (int i = 1; i <= n; i++) {
+            System.out.print((i * i) + " ");
+        }
+        System.out.println();
+    }
+}
+```
+
+**Main File: `SeriesDemo.java` (Outside the folder)**
+```java
+import Series.*;
+
+public class SeriesDemo {
+    public static void main(String[] args) {
+        int n = 5;
+        new Prime().generate(n);
+        new Fibonacci().generate(n);
+        new Square().generate(n);
+    }
+}
+```
+
+---
+
+### Q2. Geometry Package
+[cite_start]Create a package named `geometry` to calculate areas[cite: 83].
+
+**File: `geometry/Shape.java`**
+```java
+package geometry;
+
+public class Shape {
+    public void circleArea(double r) {
+        System.out.println("Circle Area: " + (3.14 * r * r));
+    }
+    public void rectangleArea(double l, double w) {
+        System.out.println("Rectangle Area: " + (l * w));
+    }
+}
+```
+
+**File: `GeometryTest.java` (Outside the folder)**
+```java
+import geometry.Shape;
+
+public class GeometryTest {
+    public static void main(String[] args) {
+        Shape s = new Shape();
+        s.circleArea(5.0);
+        s.rectangleArea(10.0, 4.0);
+    }
+}
+```
+
+---
+
+### Q3. Employee Package
+[cite_start]This focuses on importing a specific class from a package to display details[cite: 85, 86].
+
+**File: `employee/EmployeeDetails.java`**
+```java
+package employee;
+
+public class EmployeeDetails {
+    int id;
+    String name;
+    double salary;
+
+    public EmployeeDetails(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+
+    public void displayEmployee() {
+        System.out.println("ID: " + id + " | Name: " + name + " | Salary: " + salary);
+    }
+}
+```
+
+**File: `EmpMain.java` (Outside the folder)**
+```java
+import employee.EmployeeDetails;
+
+public class EmpMain {
+    public static void main(String[] args) {
+        EmployeeDetails emp = new EmployeeDetails(101, "John Doe", 55000.0);
+        emp.displayEmployee();
+    }
+}
+```
+
+### Folder Structure Reminder
+To run these, ensure your folders are named exactly like the packages:
+* [cite_start]`Series/` (contains Prime, Fibonacci, Square) [cite: 77]
+* [cite_start]`geometry/` (contains Shape) [cite: 83]
+* [cite_start]`employee/` (contains EmployeeDetails) [cite: 85]
+
+[cite_start]For **Assignment 5: Exception Handling**, the focus is on using `try-catch` blocks and creating **User-Defined Exceptions** to handle specific error conditions[cite: 52].
+
+---
+
+### 1. MyDate Validation (Custom Exception)
+[cite_start]This program validates a date and throws an `InvalidDateException` if the day or month is out of range[cite: 53, 54].
+
+```java
+class InvalidDateException extends Exception {
+    public InvalidDateException(String msg) { super(msg); }
+}
+
+class MyDate {
+    int day, month, year;
+
+    void accept(int d, int m, int y) throws InvalidDateException {
+        [cite_start]// Simple validation logic [cite: 55]
+        if (m < 1 || m > 12) throw new InvalidDateException("Invalid Month: " + m);
+        if (d < 1 || d > 31) throw new InvalidDateException("Invalid Day: " + d);
+        
+        this.day = d;
+        this.month = m;
+        this.year = y;
+    }
+
+    void display() {
+        System.out.println("Date: " + day + "/" + month + "/" + year);
+    }
+}
+
+public class DateDemo {
+    public static void main(String[] args) {
+        MyDate md = new MyDate();
+        try {
+            md.accept(31, 15, 2018); [cite_start]// Example of invalid month [cite: 55]
+            md.display();
+        } catch (InvalidDateException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+}
+```
+
+---
+
+### 2. Email Validation
+[cite_start]This class checks if an email contains the necessary `@` and `.` characters[cite: 56].
+
+```java
+import java.util.Scanner;
+
+class Validate_email {
+    void checkEmail(String email) throws Exception {
+        if (!email.contains("@") || !email.contains(".")) {
+            throw new Exception("Invalid Email Address Format"); [cite_start]// [cite: 57]
+        }
+        System.out.println("Email is valid.");
+    }
+}
+
+public class EmailDemo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter email: ");
+        String email = sc.next();
+        try {
+            new Validate_email().checkEmail(email);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+---
+
+### 3. Number Array Average (Built-in Exceptions)
+[cite_start]This handles `ArrayIndexOutOfBoundsException` and `NumberFormatException` while calculating an average[cite: 58].
+
+```java
+public class Number_array {
+    public static void main(String[] args) {
+        int[] numbers = new int[5];
+        int sum = 0;
+        try {
+            // Simulating input or processing
+            numbers[0] = 10;
+            numbers[1] = 20;
+            numbers[6] = 30; [cite_start]// This will trigger ArrayIndex related exception [cite: 58]
+            
+            for(int n : numbers) sum += n;
+            System.out.println("Average: " + (sum / numbers.length));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Error: Array index is out of bounds!");
+        }
+    }
+}
+```
+
+---
+
+### 4. Login Credentials (Custom Exception)
+[cite_start]This checks for password length and matches the username against the password[cite: 59, 60, 61].
+
+```java
+class InvalidPasswordException extends Exception {
+    public InvalidPasswordException(String msg) { super(msg); }
+}
+
+class InvalidLoginException extends Exception {
+    public InvalidLoginException(String msg) { super(msg); }
+}
+
+public class Login {
+    public static void main(String[] args) {
+        String username = "Admin";
+        String password = "Password123";
+
+        try {
+            if (password.length() < 8) {
+                throw new InvalidPasswordException("Password must be at least 8 characters"); [cite_start]// [cite: 60]
+            }
+            if (!username.equals(password)) {
+                throw new InvalidLoginException("Invalid Login: Username and Password must match"); [cite_start]// [cite: 61]
+            }
+            System.out.println("Login Successful"); [cite_start]// [cite: 61]
+        } catch (Exception e) {
+            System.out.println("Login Failed: " + e.getMessage());
+        }
+    }
+}
+For **Assignment 6: File Handling**, the programs focus on interacting with the file system using the `java.io.File` class and processing command-line arguments.
+
+---
+
+### Q1. File and Directory Operations
+This program accepts a path as a command-line argument. [cite_start]It identifies if the path is a file or a directory, lists contents, and handles a specific deletion task for `.txt` files[cite: 42, 43, 44, 45, 46].
+
+```java
+import java.io.*;
+import java.util.Scanner;
+
+public class FileDirInfo {
+    public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("Please provide a path as an argument.");
+            return;
+        }
+
+        File f = new File(args[0]);
+
+        if (f.isDirectory()) {
+            System.out.println(args[0] + " is a Directory.");
+            String[] contents = f.list();
+            int fileCount = 0;
+
+            System.out.println("Contents:");
+            for (String item : contents) {
+                System.out.println(item);
+                if (new File(f, item).isFile()) fileCount++;
+            }
+            System.out.println("Total files: " + fileCount);
+
+            // Delete .txt files
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Delete all .txt files? (yes/no): ");
+            if (sc.next().equalsIgnoreCase("yes")) {
+                for (String item : contents) {
+                    if (item.endsWith(".txt")) {
+                        new File(f, item).delete();
+                        System.out.println("Deleted: " + item);
+                    }
+                }
+            }
+        } else if (f.isFile()) {
+            System.out.println(args[0] + " is a File.");
+            System.out.println("Path: " + f.getAbsolutePath());
+            System.out.println("Size: " + f.length() + " bytes");
+            System.out.println("Readable: " + f.canRead());
+            System.out.println("Writable: " + f.canWrite());
+        } else {
+            System.out.println("Path does not exist.");
+        }
+    }
+}
+```
+
+---
+
+### Q2. Search Utility (Grep-like)
+[cite_start]This program searches for a string within a file based on options passed via command line (`-c` for count, `-v` for inverse search)[cite: 47, 48, 49, 50].
+
+```java
+import java.io.*;
+
+public class FileSearch {
+    public static void main(String[] args) {
+        // Usage: java FileSearch <option> <string> <filename> 
+        // Or: java FileSearch <string> <filename>
+        String option = "", searchStr = "", fileName = "";
+
+        if (args.length == 3) {
+            option = args[0];
+            searchStr = args[1];
+            fileName = args[2];
+        } else if (args.length == 2) {
+            searchStr = args[0];
+            fileName = args[1];
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            int count = 0;
+
+            while ((line = br.readLine()) != null) {
+                boolean contains = line.contains(searchStr);
+                
+                if (option.equals("-c")) {
+                    if (contains) count++;
+                } else if (option.equals("-v")) {
+                    if (!contains) System.out.println(line);
+                } else {
+                    if (contains) System.out.println(line);
+                }
+            }
+
+            if (option.equals("-c")) System.out.println("Count: " + count);
+
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+---
+
+### Q3. File Copy
+[cite_start]This program accepts two filenames as arguments and copies the content of the first file to the second[cite: 51].
+
+```java
+import java.io.*;
+
+public class FileCopy {
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Provide source and destination filenames.");
+            return;
+        }
+
+        try (FileInputStream in = new FileInputStream(args[0]);
+             FileOutputStream out = new FileOutputStream(args[1])) {
+
+            int data;
+            while ((data = in.read()) != -1) {
+                out.write(data);
+            }
+            System.out.println("File copied successfully.");
+
+        } catch (IOException e) {
+            System.out.println("IO Error: " + e.getMessage());
+        }
+    }
+}
+```
+
+**Note:** For Assignment 6, you must run these from the terminal and provide the arguments (e.g., `java FileCopy input.txt output.txt`).
+
+For **Assignment 7: Swing (Part-1)**, the focus is on creating Graphical User Interfaces (GUIs) using Java Swing components like `JFrame`, `JLabel`, `JTextField`, `JRadioButton`, and `JButton`.
+
+---
+
+### Q1. Login Screen Design
+This program creates a screen to accept a user name and password. [cite_start]It displays a message box indicating whether the login was successful based on whether the name and password are identical[cite: 2, 3].
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class LoginFrame extends JFrame {
+    // UI Components
+    JLabel lblUser = new JLabel("User Name");
+    JLabel lblPass = new JLabel("Password");
+    JTextField txtUser = new JTextField(15);
+    JPasswordField txtPass = new JPasswordField(15);
+    JButton btnSubmit = new JButton("Submit");
+
+    public LoginFrame() {
+        setTitle("Login Screen");
+        setLayout(new GridLayout(3, 2, 10, 10)); // Grid layout for organized fields
+
+        [cite_start]// Adding components to the frame [cite: 4, 5, 6]
+        add(lblUser); add(txtUser);
+        add(lblPass); add(txtPass);
+        add(new JLabel("")); // Empty placeholder
+        add(btnSubmit);
+
+        [cite_start]// Action listener for the Submit button [cite: 3]
+        btnSubmit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String userName = txtUser.getText();
+                String password = new String(txtPass.getPassword());
+
+                [cite_start]// Check if username and password are similar [cite: 3]
+                if (userName.equals(password) && !userName.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Login successful");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Login unsuccessful");
+                }
+            }
+        });
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300, 150);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new LoginFrame();
+    }
+}
+```
+
+---
+
+### Q2. Number Converter (Binary to others)
+[cite_start]This screen converts a binary number entered in a text field into its decimal, octal, or hexadecimal equivalent upon selecting the corresponding radio button and clicking the result button[cite: 7, 13].
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class NumberConverter extends JFrame {
+    JTextField txtInput = new JTextField(10);
+    JButton btnResult = new JButton("Show Result");
+    JRadioButton rbHex = new JRadioButton("Hexadecimal");
+    JRadioButton rbDec = new JRadioButton("Decimal");
+    JRadioButton rbOct = new JRadioButton("Octal");
+    ButtonGroup group = new ButtonGroup(); [cite_start]// Ensures only one radio button is selected [cite: 13]
+
+    public NumberConverter() {
+        setTitle("Number Converter");
+        setLayout(new FlowLayout());
+
+        [cite_start]// Grouping radio buttons [cite: 10, 11, 12, 13]
+        group.add(rbHex); group.add(rbDec); group.add(rbOct);
+
+        add(new JLabel("Input (Binary):")); add(txtInput); [cite_start]// [cite: 8]
+        add(btnResult); [cite_start]// [cite: 9]
+        add(rbHex); add(rbDec); add(rbOct);
+
+        btnResult.addActionListener(e -> {
+            try {
+                String bin = txtInput.getText();
+                int decimalValue = Integer.parseInt(bin, 2); // Convert binary to decimal first
+
+                if (rbHex.isSelected()) {
+                    JOptionPane.showMessageDialog(this, "Hex: " + Integer.toHexString(decimalValue).toUpperCase());
+                } else if (rbDec.isSelected()) {
+                    JOptionPane.showMessageDialog(this, "Decimal: " + decimalValue);
+                } else if (rbOct.isSelected()) {
+                    JOptionPane.showMessageDialog(this, "Octal: " + Integer.toOctalString(decimalValue));
+                } else {
+                    JOptionPane.showMessageDialog(this, "Please select a conversion type.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid Binary Input!");
+            }
+        });
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(250, 200);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new NumberConverter();
+    }
+}
+```
+
+---
+
+### Key Takeaways for Swing:
+* [cite_start]**Layout Managers:** `GridLayout` is great for forms[cite: 1], while `FlowLayout` is simpler for linear sequences.
+* [cite_start]**ButtonGroup:** Crucial for `JRadioButton` functionality; without it, you could select all of them at once[cite: 13].
+* [cite_start]**JPasswordField:** Always use this for passwords instead of a standard `JTextField` to mask the characters[cite: 5].
+
+[cite_start]For **Assignment 8: Swing (Part-II)**, the focus is on building more complex interfaces, including a functional arithmetic calculator and a menu-driven text editor with file dialogs[cite: 14, 31].
+
+---
+
+### Q1. Simple Arithmetic Calculator
+This program implements a grid-based calculator. [cite_start]It handles basic math operations and includes "Backspace" and "Clear" functionality[cite: 15, 17, 28].
+
+```java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class SimpleCalculator extends JFrame implements ActionListener {
+    JTextField display = new JTextField();
+    String operator = "";
+    double firstNum = 0;
+    boolean startNewNumber = true;
+
+    public SimpleCalculator() {
+        setTitle("Calculator"); [cite_start]// [cite: 16]
+        setLayout(new BorderLayout());
+        
+        display.setHorizontalAlignment(JTextField.RIGHT);
+        display.setEditable(false);
+        add(display, BorderLayout.NORTH);
+
+        JPanel panel = new JPanel(new GridLayout(5, 4, 5, 5));
+        String[] buttons = {
+            [cite_start]"Backspace", "Clear", "", "", // [cite: 17, 28]
+            [cite_start]"7", "8", "9", "/", // [cite: 18, 19, 20]
+            [cite_start]"4", "5", "6", "*", // [cite: 21, 22, 23]
+            [cite_start]"1", "2", "3", "-", // [cite: 24, 25, 26]
+            [cite_start]"0", ".", "=", "+"  // [cite: 27, 30]
+        };
+
+        for (String text : buttons) {
+            JButton btn = new JButton(text);
+            if (!text.equals("")) {
+                btn.addActionListener(this);
+                panel.add(btn);
+            } else {
+                panel.add(new JLabel(""));
+            }
+        }
+
+        add(panel, BorderLayout.CENTER);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(350, 400);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        String cmd = e.getActionCommand();
+
+        if (cmd.matches("[0-9.]")) {
+            if (startNewNumber) { display.setText(cmd); startNewNumber = false; }
+            else { display.setText(display.getText() + cmd); }
+        } else if (cmd.equals("Clear")) {
+            display.setText("");
+            firstNum = 0;
+        } else if (cmd.equals("Backspace")) {
+            String txt = display.getText();
+            if (txt.length() > 0) display.setText(txt.substring(0, txt.length() - 1));
+        } else if (cmd.equals("=")) {
+            double secondNum = Double.parseDouble(display.getText());
+            if (operator.equals("+")) display.setText(String.valueOf(firstNum + secondNum));
+            if (operator.equals("-")) display.setText(String.valueOf(firstNum - secondNum));
+            if (operator.equals("*")) display.setText(String.valueOf(firstNum * secondNum));
+            if (operator.equals("/")) display.setText(String.valueOf(firstNum / secondNum));
+            startNewNumber = true;
+        } else {
+            firstNum = Double.parseDouble(display.getText());
+            operator = cmd;
+            startNewNumber = true;
+        }
+    }
+
+    public static void main(String[] args) { new SimpleCalculator(); }
+}
+```
+
+---
+
+### Q2. Menu Driven File & String Processor
+[cite_start]This program uses a `JMenuBar` to load a file into a `JTextArea`, save changes, and toggle the text case[cite: 31, 39, 40].
+
+```java
+import javax.swing.*;
+import java.io.*;
+
+public class MenuEditor extends JFrame {
+    JTextArea textArea = new JTextArea();
+    JFileChooser fileChooser = new JFileChooser();
+
+    public MenuEditor() {
+        setTitle("Menu Driven Editor");
+        add(new JScrollPane(textArea));
+
+        JMenuBar mb = new JMenuBar();
+        
+        [cite_start]// File Menu [cite: 32]
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem load = new JMenuItem("Load"); [cite_start]// [cite: 34]
+        JMenuItem save = new JMenuItem("Save"); [cite_start]// [cite: 37]
+        JMenuItem exit = new JMenuItem("Exit"); [cite_start]// [cite: 38]
+        
+        fileMenu.add(load); fileMenu.add(save); fileMenu.addSeparator(); fileMenu.add(exit);
+
+        [cite_start]// Strings Menu [cite: 33]
+        JMenu stringMenu = new JMenu("Strings");
+        JMenu changeCase = new JMenu("Change Case"); [cite_start]// [cite: 35]
+        JMenuItem upper = new JMenuItem("Upper Case"); [cite_start]// [cite: 35]
+        JMenuItem lower = new JMenuItem("Lower Case"); [cite_start]// [cite: 36]
+        
+        changeCase.add(upper); changeCase.add(lower);
+        stringMenu.add(changeCase);
+
+        mb.add(fileMenu); mb.add(stringMenu);
+        setJMenuBar(mb);
+
+        // Functionality
+        load.addActionListener(e -> {
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                try (BufferedReader br = new BufferedReader(new FileReader(fileChooser.getSelectedFile()))) {
+                    [cite_start]textArea.read(br, null); // [cite: 39]
+                } catch (IOException ex) { ex.printStackTrace(); }
+            }
+        });
+
+        save.addActionListener(e -> {
+            if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileChooser.getSelectedFile()))) {
+                    [cite_start]textArea.write(bw); // [cite: 40]
+                } catch (IOException ex) { ex.printStackTrace(); }
+            }
+        });
+
+        upper.addActionListener(e -> textArea.setText(textArea.getText().toUpperCase())); [cite_start]// [cite: 40]
+        lower.addActionListener(e -> textArea.setText(textArea.getText().toLowerCase())); [cite_start]// [cite: 40]
+        exit.addActionListener(e -> System.exit(0));
+
+        setSize(500, 400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) { new MenuEditor(); }
+}
+```
